@@ -329,10 +329,10 @@ def entrada(): #executa a função entrada - função que processa esse envio
     return jsonify({"success": True}), 200 #se tudo deu certo, sem erros com entrada e saída, retorna uma resposta de sucesso | 200 = diz que está tudo certo
 
 # ENTRADA DO APLICATIVO
-@app.route('/entrada_app', methods=['POST'])
-def entrada_app():
+@app.route('/entrada_app', methods=['POST']) #cria a rota /entrada_app com método POST
+def entrada_app(): #define a função entrada_app
 
-    nome = request.form.get('nome')
+    nome = request.form.get('nome') #guarda na variavel nome o que foi mandado no espaço da variavel nome lá no app app
     categoria = request.form.get('categoria')
     qtde = request.form.get('qtde')
     responsavel = request.form.get('responsavel')
@@ -342,8 +342,8 @@ def entrada_app():
     tipo = request.form.get('tipo')
     imagem = request.files.get('imagem')
 
-    if nome:
-        nome = nome.strip()
+    if nome: #se a variavel nome for verdadeira
+        nome = nome.strip() #remove os espaços de tras e frente do texto que foi enviado | ex: ( Amanda)
     if categoria:
         categoria = categoria.strip()
     if responsavel:
@@ -351,67 +351,67 @@ def entrada_app():
     if descricao:
         descricao = descricao.strip()
 
-    if not nome or not qtde or not responsavel or not tipo:
-        return jsonify({
+    if not nome or not qtde or not responsavel or not tipo: #se nao mandou nome, quantidade, tipo
+        return jsonify({ #retorna a mensagem de erro
             "success": False,
             "erro": "Campos obrigatórios"
-        }), 400
+        }), 400 #Bad request | má requisição
 
-    try:
-        qtde = int(qtde)
+    try: #tente
+        qtde = int(qtde) #quantidade é um numero inteiro
 
-        if qtde <= 0:
-            return jsonify({
+        if qtde <= 0: #se quantidade for menor ou igual a 0
+            return jsonify({ #retorne mensagem de erro
                 "success": False,
                 "erro": "Quantidade deve ser maior que zero"
-            }), 400
+            }), 400 #Bad request | má requisição
 
-        estoque_min = int(estoque_min) if estoque_min else 0
-        preco = float(preco) if preco else 0.0
+        estoque_min = int(estoque_min) if estoque_min else 0 #estoque_min é um numero inteiro se estoque_min se não é igual a 0
+        preco = float(preco) if preco else 0.0 #preco é numero decimal se preco se não é igual a 0.0
 
-    except (ValueError, TypeError):
-        return jsonify({
+    except (ValueError, TypeError): #exceção erro de valor e erro de tipo
+        return jsonify({ #retorna a mensagem
             "success": False,
             "erro": "Quantidade, preço ou estoque mínimo inválido"
-        }), 400
+        }), 400 #Bad request | má requisição
 
-    caminho_imagem = None
+    caminho_imagem = None #caminho_imagem é nada
 
-    if imagem:
-        nome_arquivo = secure_filename(imagem.filename)
+    if imagem: #se tiver imagem
+        nome_arquivo = secure_filename(imagem.filename) #pega o nome do arquivo e tira os nomes suspeitos
 
-        pasta = os.path.join(
+        pasta = os.path.join( #monta o caminho da pasta onde os arquivos enviados serão armazenados
             app.root_path,
             'static',
             'uploads'
         )
 
-        os.makedirs(pasta, exist_ok=True)
+        os.makedirs(pasta, exist_ok=True) #cria a pasta da variavel pasta, se a pasta ja existir nao vai dar erro
 
-        imagem.save(
-            os.path.join(pasta, nome_arquivo)
+        imagem.save( #imagem salvar
+            os.path.join(pasta, nome_arquivo) #salva a imagem na pasta e salva o nome dado ao arquivo
         )
 
-        caminho_imagem = url_for(
+        caminho_imagem = url_for( #caminho da imagem é a pasta static
             'static',
-            filename=f'uploads/{nome_arquivo}'
+            filename=f'uploads/{nome_arquivo}' #monta o caminho com o nome do arquivo(ja com hash, guardado na variavel nome_arquivo)
         )
 
-    conexao = None
-    cursor = None
+    conexao = None #conexao é nada
+    cursor = None #cursor é nada
 
-    try:
-        conexao = get_db()
-        cursor = conexao.cursor()
+    try: #tente
+        conexao = get_db() #abre a conexao com o mysql
+        cursor = conexao.cursor() #abre o cursor
 
         cursor.execute("""
             SELECT qtde, preco, categoria, estoque_min, descricao, imagem
             FROM estoque
             WHERE TRIM(nome) = TRIM(%s)
             LIMIT 1
-        """, (nome,))
+        """, (nome,)) #seleciona os itens do estoque onde TRIM? limite de 1 item
 
-        produto = cursor.fetchone()
+        produto = cursor.fetchone() #pega o primeiro que aparecer e guarda na variavel produto
 
         # ENTRADA (SOMA)
         if tipo == "entrada":
