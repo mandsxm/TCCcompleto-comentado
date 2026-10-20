@@ -1,0 +1,7 @@
+FUNÇÕES COMUNS DO JAVASCRIPT
+
+Variaveis:
+    const: valor fixo que nao pode ser mudado
+    var: forma antiga, nao recomendado
+    let: dentro de {}, pode ser alterada
+

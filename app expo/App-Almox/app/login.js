@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from 'react';
 import { router } from 'expo-router';
 
-export default function Login() {
+export default function Login() { 
 
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
