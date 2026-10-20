@@ -397,10 +397,10 @@ def entrada_app(): #define a função entrada_app
             filename=f'uploads/{nome_arquivo}' #monta o caminho com o nome do arquivo(ja com hash, guardado na variavel nome_arquivo)
         )
 
-    conexao = None #conexao é nada
-    cursor = None #cursor é nada
+    conexao = None #vai armazenar a conexão com o banco de dados
+    cursor = None #vai armazenar o cursor usado para executar comandos SQL
 
-    try: #tente
+    try: #tente (tent executr funcoes que podem gerar erros)
         conexao = get_db() #abre a conexao com o mysql
         cursor = conexao.cursor() #abre o cursor
 
@@ -409,7 +409,8 @@ def entrada_app(): #define a função entrada_app
             FROM estoque
             WHERE TRIM(nome) = TRIM(%s)
             LIMIT 1
-        """, (nome,)) #seleciona os itens do estoque onde TRIM? limite de 1 item
+        """, (nome,)) #seleciona as infos do estoque que correspondem ao 'nome' do item, limite de 1 item
+        #TRIM remove os espaços do inicio e fim
 
         produto = cursor.fetchone() #pega o primeiro que aparecer e guarda na variavel produto
 
