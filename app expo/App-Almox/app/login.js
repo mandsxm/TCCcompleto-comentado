@@ -1,31 +1,34 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
-import { useFonts, Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
-import { Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
-import { Poppins_700Bold } from '@expo-google-fonts/poppins';
-import { LinearGradient } from 'expo-linear-gradient';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState } from 'react';
-import { router } from 'expo-router';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'; //importa tudo isso da biblioteca react native
+import { useFonts, Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter'; //importa fonte inter
+import { Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat'; //importa fonte montserrat
+import { Poppins_700Bold } from '@expo-google-fonts/poppins'; //importa fonta poppins
+import { LinearGradient } from 'expo-linear-gradient'; //importa linear gradiente
+import AsyncStorage from '@react-native-async-storage/async-storage'; //importa AsyncStorage, que permite armazenar dados localmente no dispositivo.
+import { useState } from 'react'; //importa useState usado para guardar informações que podem mudar durante a execução do aplicativo.
+import { router } from 'expo-router'; //importa router, utilizado para navegar entre as telas do aplicativo.
 
-export default function Login() { 
+export default function Login() { //exporta (outros arquivos do projeto podem importar essa função) default (função principal do arquivo) a função Login
 
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({ //variável fontsLoaded = usa a desestruturação de um array para obter o primeiro valor retornado por useFonts.
     Inter_400Regular,
     Inter_700Bold,
     Montserrat_400Regular,
     Montserrat_700Bold,
     Poppins_700Bold,
   });
+  //A variável fontsLoaded geralmente recebe um valor booleano:
+  //true: as fontes terminaram de carregar.
+  //false: as fontes ainda estão carregando ou não terminaram o carregamento.
 
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState(''); //declara a variavel que recebe os dois valores retornados pelo useState | email = guarad o valor atual do email | setEmail = para atualizar o email | useState('') = cria um estado com valor inicial vazio ('').
+  const [senha, setSenha] = useState(''); 
 
-  const [emailFocus, setEmailFocus] = useState(false);
-  const [senhaFocus, setSenhaFocus] = useState(false);
+  const [emailFocus, setEmailFocus] = useState(false); //declara a variavel que guarda o estado atual do foco do campo de e-mail e a função utilizada para alterar esse estado | useState(false) = define o valor inicial como false, ou seja, o campo começa sem foco.
+  const [senhaFocus, setSenhaFocus] = useState(false); 
 
-  const fazerLogin = async () => {
-  try {
-    const resposta = await fetch('http://10.154.20.25:5000/login_app', {
+  const fazerLogin = async () => { //declara a função fazerLogin 
+  try { //inicia um bloco de código no qual podem ocorrer erros.
+    const resposta = await fetch('http://10.154.20.25:5000/login_app', { //declara a variavel resposta que 
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
