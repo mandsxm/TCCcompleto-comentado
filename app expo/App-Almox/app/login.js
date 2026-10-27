@@ -67,26 +67,26 @@ export default function Login() { //exporta (outros arquivos do projeto podem im
     return null; //encerra a execução da função do componente naquele momento e retorna null.
   }
 
-  return ( //
-    <View style={styles.container}> //
+  return ( // indica o que a função do componente deve devolver para o React renderizar na tela.
+    <View style={styles.container}> {/*View é um componente do React Native usado para agrupar e organizar outros componentes visuais. | style={styles.container} = define a aparência do View.*/}
 
-      <Image //
-        source={require('../assets/industria.png')} //
-        style={styles.background} //
-        resizeMode="cover" //
+      <Image /**/
+        source={require('../assets/industria.png')} /**/
+        style={styles.background} /**/
+        resizeMode="cover" /**/
       />
 
-      <LinearGradient //
-        colors={[ //
-          'rgba(29, 50, 115, 0.25)', //
-          'rgba(82, 104, 168, 0.95)' //
+      <LinearGradient /**/
+        colors={[ /**/
+          'rgba(29, 50, 115, 0.25)', /**/
+          'rgba(82, 104, 168, 0.95)' /**/
         ]}
-        start={{ x: 0, y: 0 }} //
-        end={{ x: 0, y: 1 }} //
-        style={styles.gradient} //
+        start={{ x: 0, y: 0 }} /**/
+        end={{ x: 0, y: 1 }} /**/
+        style={styles.gradient} /**/
       />
 
-      <View style={styles.content}> 
+      <View style={styles.content}> {/**/}
 
         <Text style={styles.paragraph1}> {/**/}
           BOAS-VINDAS
@@ -141,7 +141,7 @@ export default function Login() { //exporta (outros arquivos do projeto podem im
             style={styles.button} /**/
             onPress={fazerLogin} /**/
           >
-            <Text style={styles.buttonText}> /**/
+            <Text style={styles.buttonText}> {/**/}
               ENTRAR
             </Text>
           </TouchableOpacity>
