@@ -58,6 +58,8 @@ export default function Login() { //exporta (outros arquivos do projeto podem im
   } catch (erro) { //inicia o bloco que trata exceções geradas dentro do try.
     console.log(erro); //imprime os detalhes do erro no console.
     alert('Não foi possível conectar ao servidor'); //exibe uma mensagem para o usuário informando que houve um problema.
+    //console é um objeto disponível no JavaScript que oferece métodos para exibir informações, avisos e erros.
+    //console.log = exibir valores e mensagens no console.
   }
 };
 
