@@ -1,3 +1,20 @@
+NO POWERSHELL
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+escolhe 'a'
+
+NO VS
+cd "C:\Users\Aluno\TCCcompleto-comentado\app expo\App-Almox"
+npm.cmd install
+npx expo start
+
+SE DER ERRO
+Remove-Item -Recurse -Force node_modules
+npm.cmd install
+npx.cmd expo start
+
+
+
+
 cd ".\app expo\"
 npx.cmd create-expo-app@latest App-Almox --template blank
 npm.cmd install expo@57.0.0
