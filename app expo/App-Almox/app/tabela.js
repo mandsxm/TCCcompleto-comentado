@@ -4,7 +4,7 @@ import { Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/mo
 import { MaterialIcons } from '@expo/vector-icons'; //para exibir icones como lixeira, perfil, lupa e etc...
 import { useState, useCallback } from 'react'; //importa useState = usado para guardar informações que podem mudar durante a execução do aplicativo. \ useCallback = memoriza uma função entre renderizações, mantendo a mesma referência enquanto suas dependências não mudarem.
 import AsyncStorage from '@react-native-async-storage/async-storage'; //importa AsyncStorage, que permite armazenar dados localmente no dispositivo.
-import { router, useFocusEffect } from 'expo-router'; //importa router, utilizado para navegar entre as telas do aplicativo.
+import { router, useFocusEffect } from 'expo-router'; //importa router, utilizado para navegar entre as telas do aplicativo. | importa userFocusEffect = executa um efeito quando a tela está em foco
 
 export default function Tabela() { //exporta (outros arquivos do projeto podem importar essa função) default (função principal do arquivo) a função Tabela
 
@@ -20,34 +20,39 @@ export default function Tabela() { //exporta (outros arquivos do projeto podem i
   const [produtoAberto, setProdutoAberto] = useState(null); //diz que inicialmente não está mostrando os detalhes de nenhum produto, mas pode ser aberto mais tarde
   const [menuAberto, setMenuAberto] = useState(false); //abertura do menu lateral | false: 
   const [imagemAberta, setImagemAberta] = useState(null); //null:
-  const [produtos, setProdutos] = useState([]); //[]: 
-  const [nomeUsuario, setNomeUsuario] = useState(''); //'': 
-  const [tipoUsuario, setTipoUsuario] = useState('');
+  const [produtos, setProdutos] = useState([]); //[]: array vazio | no incio a tabela aparece sem produtos
+  const [nomeUsuario, setNomeUsuario] = useState(''); //guarda o nome recuperado do armazenamento local e permite mostrá-lo na interface. 
+  const [tipoUsuario, setTipoUsuario] = useState(''); //guarda a categoria do usuário, como "admin" ou "user".
   //usa um hook, useState. | Hook usado para lembrar de infos e fazer ações automáticas.
 
-  useFocusEffect(
-    useCallback(() => {
-      const carregarUsuario = async () => {
-        const nome = await AsyncStorage.getItem('nomeUsuario');
-        const tipo = await AsyncStorage.getItem('tipoUsuario');
+  //CARREGA OS USUARIOS
+  // recupera o nome e o tipo do usuário que estão salvos no celular e atualiza os estados do React para exibir essas informações na barra lateral do aplicativo.
+  useFocusEffect( //recupera as informações do usuario quando ele entra na tela da tabela ou volta para ela depois de navegar para outra tela
+    useCallback(() => { //memoriza a função passada pra ele
+      const carregarUsuario = async () => { //cria a função carregarUsuario assincrona (usa await pra esperar algo carregar antes de ser executada)
+        const nome = await AsyncStorage.getItem('nomeUsuario'); //cria a função nome que armazena localmente os dados do Item em "nomeUsuario"
+        const tipo = await AsyncStorage.getItem('tipoUsuario'); //como tem await, essa função espera a função de cima terminar pra depois ser executada
 
-        setNomeUsuario(nome || '');
-        setTipoUsuario(tipo || '');
+        setNomeUsuario(nome || ''); //Essas linhas colocam os dados recuperados nos estados do React.
+        setTipoUsuario(tipo || ''); // || = funciona como uma alternativa: se o valor recuperado for null, será utilizada uma string vazia ('').
       };
 
-      carregarUsuario();
+      carregarUsuario(); //chama a função que foi criada - que pegou os dados do usuario - mostra as infos do usuario (NOME+TIPO)
     }, [])
   );
 
+  //CARREGA OS PRODUTOS
   useFocusEffect(
   useCallback(() => {
-    const buscarProdutos = async () => {
-      try {
-        const resposta = await fetch('http://10.154.20.25:5000/tabela_app');
-        const dados = await resposta.json();
+    const buscarProdutos = async () => { //cria a função buscarProdutos assincrona
+      try { //TENTA buscar os produtos - mas pode dar erro (ex: nao ter produtos)
+        const resposta = await fetch('http://10.154.20.25:5000/tabela_app'); //cria a função assincrona 'resposta' que envia a requisição HTTP ao endereço do servidor
+        //O fetch faz esse pedido e 'resposta' representa o retorno recebido.
+        const dados = await resposta.json(); //a função dados recebe a 'resposta' em formato json
 
-        if (dados.success) {
-          const produtosFormatados = dados.produtos.map((item) => ({
+        if (dados.success) { //verifica se a busca da variavel 'dados' deu certo
+          const produtosFormatados = dados.produtos.map((item) => ({ //cria a variavel produtosFormatados que vai guardar uma nova lista de produtos pegando o 'dados'+'produto'(é a propriedade de 'dados' que contém a lista de produtos.)
+          //.map((item)) => ({ = percorre cada elemento da lista por vez. | ((item)) = cria um novo objeto par cada produto.
             id: item.id,
             responsavel: item.responsavel,
             nome: item.nome,
@@ -59,14 +64,14 @@ export default function Tabela() { //exporta (outros arquivos do projeto podem i
             imagem: item.imagem,
           }));
 
-          setProdutos(produtosFormatados);
+          setProdutos(produtosFormatados); //atualiza a lista de produtos
         }
-      } catch (erro) {
-        console.log('ERRO AO BUSCAR PRODUTOS:', erro);
+      } catch (erro) { //regista erros de requisiçãoou processamento (por causa do 'try')
+        console.log('ERRO AO BUSCAR PRODUTOS:', erro); 
       }
     };
 
-    buscarProdutos();
+    buscarProdutos(); //executa a função de busca
   }, [])
 );
 
