@@ -1,24 +1,29 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Modal, Alert} from 'react-native';
-import { useFonts, Poppins_700Bold } from '@expo-google-fonts/poppins';
-import { Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useState, useCallback } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { router, useFocusEffect } from 'expo-router';
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Modal, Alert} from 'react-native'; //importa tudo isso da biblioteca react native
+import { useFonts, Poppins_700Bold } from '@expo-google-fonts/poppins'; //importa fonte poppins
+import { Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat'; //importa fonte montserrat
+import { MaterialIcons } from '@expo/vector-icons'; //para exibir icones como lixeira, perfil, lupa e etc...
+import { useState, useCallback } from 'react'; //importa useState = usado para guardar informações que podem mudar durante a execução do aplicativo. \ useCallback = memoriza uma função entre renderizações, mantendo a mesma referência enquanto suas dependências não mudarem.
+import AsyncStorage from '@react-native-async-storage/async-storage'; //importa AsyncStorage, que permite armazenar dados localmente no dispositivo.
+import { router, useFocusEffect } from 'expo-router'; //importa router, utilizado para navegar entre as telas do aplicativo.
 
-export default function Tabela() {
+export default function Tabela() { //exporta (outros arquivos do projeto podem importar essa função) default (função principal do arquivo) a função Tabela
 
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({ //variável fontsLoaded = usa a desestruturação de um array para obter o primeiro valor retornado por useFonts.
     Poppins_700Bold,
     Montserrat_400Regular,
   });
+  //A variável fontsLoaded geralmente recebe um valor booleano:
+  //true: as fontes terminaram de carregar.
+  //false: as fontes ainda estão carregando ou não terminaram o carregamento.
 
-  const [produtoAberto, setProdutoAberto] = useState(null);
-  const [menuAberto, setMenuAberto] = useState(false);
-  const [imagemAberta, setImagemAberta] = useState(null);
-  const [produtos, setProdutos] = useState([]);
-  const [nomeUsuario, setNomeUsuario] = useState('');
+  //userState = guarda os estados que podem mudar durante o uso do app
+  const [produtoAberto, setProdutoAberto] = useState(null); //diz que inicialmente não está mostrando os detalhes de nenhum produto, mas pode ser aberto mais tarde
+  const [menuAberto, setMenuAberto] = useState(false); //abertura do menu lateral | false: 
+  const [imagemAberta, setImagemAberta] = useState(null); //null:
+  const [produtos, setProdutos] = useState([]); //[]: 
+  const [nomeUsuario, setNomeUsuario] = useState(''); //'': 
   const [tipoUsuario, setTipoUsuario] = useState('');
+  //usa um hook, useState. | Hook usado para lembrar de infos e fazer ações automáticas.
 
   useFocusEffect(
     useCallback(() => {
