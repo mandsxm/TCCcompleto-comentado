@@ -76,38 +76,38 @@ export default function Tabela() { //exporta (outros arquivos do projeto podem i
 );
 
 // EXCLUIR ITEM
-const excluirItem = (id) => {
-  Alert.alert(
+const excluirItem = (id) => { //a função excluirItem pega o id do produto que identifica qual produto quer excluir
+  Alert.alert( //manda mensagem de alerta
     'Excluir item',
     'Tem certeza que deseja excluir este item?',
     [
-      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Cancelar', style: 'cancel' }, //dá a opção de cancelar ou excluir
       {
         text: 'Excluir',
         style: 'destructive',
-        onPress: async () => {
-          try {
-            const resposta = await fetch(
+        onPress: async () => {//função onPress assincrona
+          try { //tenta
+            const resposta = await fetch( //chama a resposta que envia a requisição HTTP com o id do item que sera excluido
               `http://10.154.20.25:5000/excluir/${id}`,
-              { method: 'DELETE' }
+              { method: 'DELETE' } //usa o metodo delete
             );
 
-            const data = await resposta.json();
-            console.log('RESPOSTA EXCLUIR:', data);
+            const data = await resposta.json(); //na função data pega a resposta da requisição em json
+            console.log('RESPOSTA EXCLUIR:', data); //console.log() mostra a resposta no console, o que ajuda a verificar o resultado da operação.
 
-            if (data.success) {
-              Alert.alert('Sucesso', 'Item excluído com sucesso!');
+            if (data.success) {// a exclusão deu certo
+              Alert.alert('Sucesso', 'Item excluído com sucesso!'); //manda mensagem de sucesso
 
               // Remove da tabela sem precisar recarregar
-              setProdutos((produtosAtuais) =>
-                produtosAtuais.filter((item) => item.id !== id)
+              setProdutos((produtosAtuais) => //
+                produtosAtuais.filter((item) => item.id !== id) //
               );
-            } else {
-              Alert.alert('Erro', data.erro || 'Erro ao excluir o item.');
+            } else { //se não deu certo
+              Alert.alert('Erro', data.erro || 'Erro ao excluir o item.'); //mensagem de erro
             }
-          } catch (erro) {
-            console.log('ERRO AO EXCLUIR:', erro);
-            Alert.alert('Erro', 'Não foi possível conectar ao servidor.');
+          } catch (erro) { //se o tentar nao deu
+            console.log('ERRO AO EXCLUIR:', erro); //registra o erro no console
+            Alert.alert('Erro', 'Não foi possível conectar ao servidor.'); //
           }
         },
       },
